@@ -26,7 +26,14 @@ module Nunes
         view_runtime = payload[:view_runtime]
         view_runtime = view_runtime.round if view_runtime
 
-        runtime = ((ending - start) * 1_000).round
+				runtime = nil
+
+				# We get exceptions when calling this, trying to figure it out
+				begin
+					runtime = ((ending - start) * 1_000).round
+				rescue Exception
+					return
+				end
 
         timing "action_controller.runtime.total", runtime
         timing "action_controller.runtime.view", view_runtime if view_runtime
